@@ -5,6 +5,13 @@
 #include <sstream>
 #include <vector>
 #include <iomanip>
+#include <algorithm>
+
+
+#include "headers/node.h"
+#include "headers/amatrix.h"
+
+
 
 // separator character
 const char comma = ',';
@@ -16,71 +23,23 @@ const char space = ' ';
 unsigned number_of_vertices;
 
 
-struct Node {
-	int id; // ID of node.
-	int parent_id; // ID of parent node.
-};
 
-class AMatrix {
-	public:
-		unsigned getVertexCount( void );
-		void assignEdge(std::vector<unsigned> vec);
-		void setMatrix(unsigned num);
-		void printMatrix( void );
-		AMatrix(unsigned num);
-		AMatrix();
+//~ class AMatrix {
+	//~ public:
+		//~ unsigned getVertexCount( void );
+		//~ void assignEdge(std::vector<unsigned> vec);
+		//~ void setMatrix(unsigned num);
+		//~ std::vector< std::vector<unsigned> > getMatrix(void);
+		//~ void printMatrix( void );
+		//~ AMatrix(unsigned num);
+		//~ AMatrix();
 		
-	private:
-		unsigned number_of_vertices;
-		std::vector< std::vector<unsigned> > matrix;
+	//~ private:
+		//~ unsigned number_of_vertices;
+		//~ std::vector< std::vector<unsigned> > matrix;
 		
-};
+//~ };
 
-AMatrix::AMatrix(void){}
-
-AMatrix::AMatrix(unsigned num) {
-	number_of_vertices = num;
-	// Resize matrix based on the number of vertices.
-	matrix.resize(number_of_vertices,
-		std::vector<unsigned>(number_of_vertices));
-}
-
-void AMatrix::setMatrix(unsigned num) {
-	number_of_vertices = num;
-	// Resize matrix based on the number of vertices.
-	matrix.resize(number_of_vertices,
-		std::vector<unsigned>(number_of_vertices));
-}
-
-void AMatrix::assignEdge(std::vector<unsigned> vec) {
-	for (int i = 0; i < vec.size() - 1; i = i + 2) {
-		matrix[vec[i]][vec[i + 1]] = 1;
-		matrix[vec[i + 1]][vec[i]] = 1;      
-	}  	
-}
-
-void AMatrix::printMatrix(void) {
-	std::cout << "PRINT MATRIX\n";
-	for (int i = 0; i < number_of_vertices; i++) {
-		std::cout << "[";
-		for (int j = 0; j < number_of_vertices; j++) {
-			if (j != number_of_vertices - 1) {
-				std::cout << matrix[i][j] << " ";
-			}
-			else
-				std::cout << matrix[i][j];
-				
-			if (j == number_of_vertices - 1) {
-					std::cout << "]";
-			}
-		}
-		std::cout << "\n";
-	}
-}
-
-unsigned AMatrix::getVertexCount(void) {
-	return number_of_vertices;
-}
 
 bool check_separator(char input) {
 	switch (input)
@@ -147,14 +106,13 @@ int main() {
 			input >> separator;
 			input >> separator;
 			while (!input.eof()) {
-				std::cout << "In While Loop: ";
 				input >> num;
 				std::cout << num;
-				nums.push_back(num-1);
+				nums.push_back(num);
 				input >> separator;
 				input >> num;
 				std::cout << num;
-				nums.push_back(num-1);
+				nums.push_back(num);
 				input >> separator;
 				std::cout << separator;
 				input >> separator;
@@ -219,16 +177,117 @@ int main() {
 		}	
 		
 		else if (command == 's') {
-			unsigned vertex1;
-			unsigned vertex2;
-			input >> vertex1;
+			unsigned s;
+			unsigned t;
+			input >> s;
 			if (input.fail()) {
 				std::cerr << "\nError parsing while finding shortest path\n";
 			}
-			input >> vertex2;
+			input >> t;
 			if (input.fail()) {
 				std::cerr << "\nError parsing while finding shortest path\n";
 			}
+			// Case 1: if s = t and they are in the set of vertices
+			// Case 2: if s != t and there is a shortest path
+			// Case 3: if s != t and there is not a shortest path
+			// Case 4: one of s or t don't exist (or both don't exist).
+			// though as long as one doesn't exist, we can output false.
+			
+			// This vector stores all the visited vertices.
+			std::vector<unsigned> visited_vertices;
+			visited_vertices.push_back(s);
+			// This vector stores the nodes we need to check out.
+			std::vector<unsigned> to_visit;
+			
+			//~ std::vector<unsigned> parent_id = {};
+			//~ Node node_s(s, parent_id);
+			bool t_found = false;
+			
+			//~ if (s or t > number_of_vertices - 1) {
+				//~ std::cerr << "Error: s or t is an invalid number";
+				//~ break;
+			//~ }
+			
+			//~ else if (s == t) {
+				//~ std::cout << t << "-" << t << "\n";
+				//~ break;
+			//~ }
+			
+			//~ mat = matrix.getMatrix();
+			//~ for (unsigned index = 0; index < number_of_vertices; index++) {
+				//~ is_t_connected(t, mat[index],
+				
+			//~ }
+			
+			//~ while (t_found != true) {
+				
+				
+				//~ for (unsigned index = 0; index <node.length(); index++) {
+					//~ if (node[index] == 1) {
+						//~ to_visit.push_back(index);
+						//~ // MY QUESTION IS: IF I TAKE THE parent_id from node_s and add an element, 
+						//~ // does that change the vector for node_s? Also, does it matter? No.
+						//~ // 
+						//~ Node node_i(index,node_s.getParentId().push_back(node_s.getId()))
+					//~ }
+				//~ }
+				
+				//~ // for loop that looks at each vertex in to_visit
+				//~ for (unsigned 
+			
+			//~ // node is one row of the matrix
+			//~ std::vector<unsigned> node = matrix.getMatrix()[s];	
+			
+			
+			
+			
+			
 		}     
     }
 }
+
+//~ // Could use pointer here?
+//~ // This function returns true if key is in v and false otherwise.
+//~ bool is_in_vec(std::vector<unsigned> v, unsigned key) {
+	
+	//~ if (std::find(v.begin(), v.end(), key) != v.end()) {
+		//~ return true;
+	//~ }
+	//~ else
+		//~ return false;
+//~ }
+
+//~ /* row: row i of the adjacency matrix
+ //~ * to_visit: stores all vertices (unvisited) connected to vertex i 
+ //~ * visited_vertices: 
+ //~ */
+//~ // updates the vectors to_visit, visited_vertices, and visited_nodes
+//~ // accordingly. If index == t, then return true.
+//~ bool is_t_connected(unsigned * t,
+					//~ std::vector<unsigned> * row, 
+					//~ std::vector<unsigned> * to_visit, 
+					//~ std::vector<unsigned> * visited_vertices,
+					//~ std::vector<unsigned> parent_id, // make it pointer? 
+					//~ std::vector<Node> * visited_nodes) {
+					
+	//~ // Get indices for where s is connected.
+	//~ for (unsigned index = 0; index <row.length(); index++) {
+		//~ if (row[index] == 1) {
+			//~ if (index == t) {
+				//~ return true;
+			//~ }
+			//~ else if (!is_in_vec(visited_vertices, index)) {
+				//~ to_visit.push_back(index);
+				//~ Node node(index,parent_id)
+				//~ visited_nodes.push_back(node);
+					//~ }
+				//~ }
+			//~ }
+			
+	//~ return false;
+	
+//~ }
+	
+	
+	
+	
