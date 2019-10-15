@@ -7,6 +7,7 @@ class Node {
 	Node(unsigned num1, std::vector<unsigned> vec);
 	unsigned getId(void);
 	std::vector<unsigned> getParentId(void);
+	void printParentId(void);
 	
 	private:
 	unsigned id; // ID of node.

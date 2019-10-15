@@ -2,70 +2,49 @@
 // Use pointers when I want the function to modify the variable
 // and not modify a copy of the variable (the func creates a copy).
 #include <iostream>
-#include <sstream>
 #include <vector>
 #include <iomanip>
+#include <sstream>
 #include <algorithm>
 
 
 #include "headers/node.h"
 #include "headers/amatrix.h"
 
-
-
 // separator character
-const char comma = ',';
-const char left_par = '{';
-const char right_par = '}';
-const char left_arrow = '<';
-const char right_arrow = '>';   
-const char space = ' ';
-unsigned number_of_vertices;
+//~ const char comma = ',';
+//~ const char left_par = '{';
+//~ const char right_par = '}';
+//~ const char left_arrow = '<';
+//~ const char right_arrow = '>';   
+//~ const char space = ' ';
 
 
-
-//~ class AMatrix {
-	//~ public:
-		//~ unsigned getVertexCount( void );
-		//~ void assignEdge(std::vector<unsigned> vec);
-		//~ void setMatrix(unsigned num);
-		//~ std::vector< std::vector<unsigned> > getMatrix(void);
-		//~ void printMatrix( void );
-		//~ AMatrix(unsigned num);
-		//~ AMatrix();
-		
-	//~ private:
-		//~ unsigned number_of_vertices;
-		//~ std::vector< std::vector<unsigned> > matrix;
-		
-//~ };
-
-
-bool check_separator(char input) {
-	switch (input)
-	{
-    case comma: // code to be executed if
-        return true;
-    case left_par: // code to be executed if 
-        return true;
+//~ bool check_separator(char input) {
+	//~ switch (input)
+	//~ {
+    //~ case comma: // code to be executed if
+        //~ return true;
+    //~ case left_par: // code to be executed if 
+        //~ return true;
         
-    case right_par: // code to be executed if 
-        return true;
-	case space:
-		return true;
-    case right_arrow: // code to be executed if
-        return true;
-    default:
-		return false;// code to be executed if n doesn't match any cases
-	}
-	
-}
+    //~ case right_par: // code to be executed if 
+        //~ return true;
+	//~ case space:
+		//~ return true;
+    //~ case right_arrow: // code to be executed if
+        //~ return true;
+    //~ default:
+		//~ return false;// code to be executed if n doesn't match any cases
+	//~ }
+//~ }
 
 AMatrix matrix;
 
 int main() {
 	
-
+	
+	
     while (!std::cin.eof()) {
         // Read a line of input until EOL and store in a string.
         std::cout << "HELLO WORLD.\n";
@@ -87,6 +66,7 @@ int main() {
         input >> command;
         
         if (command == 'V') {
+			unsigned number_of_vertices;
 			input >> number_of_vertices;
 			if (input.fail()) {
 				std::cerr << "\nError parsing vertex creation\n";
@@ -97,9 +77,8 @@ int main() {
 			matrix.setMatrix(number_of_vertices);
 			matrix.printMatrix();
 		}
-		//~ E {<2,1>}
+		
 		else if (command == 'E') {
-			
 			//~ // while there are characters in the input line
 			unsigned num;
 			char separator;
@@ -107,71 +86,22 @@ int main() {
 			input >> separator;
 			while (!input.eof()) {
 				input >> num;
-				std::cout << num;
+
 				nums.push_back(num);
 				input >> separator;
 				input >> num;
-				std::cout << num;
+
 				nums.push_back(num);
 				input >> separator;
-				std::cout << separator;
 				input >> separator;
-				std::cout << separator;
 				
-				//~ if (separator == right_par) {
-					//~ break;
-				//~ }
-				//~ if (input.eof()) {
-					//~ break;
-				//~ }
 				input >> separator;
-				std::cout << separator;
-				
-				std::cout << "\n";
-				
-			//E {<2,6>,<2,8>,<2,5>,<6,5>,<5,8>,<6,10>,<10,8>}
-			
-			//~ // read a character
-            //~ // Note that whitespace is ignored
-				
-				//~ input >> separator;
-				//~ if (check_separator(separator)) {
-					//~ continue;
-				//~ }
-					// if eof bail out
-				//~ if (input.eof())
-					//~ break;
-					
-				//~ else if (separator == left_arrow) {
-					
-					//~ // parse an integer
-					//~ input >> num;
-					//~ std::cout << "\nPrinting num: " << num;
-					//~ if (input.fail()) {
-						//~ std::cerr << "\nError parsing a number\n";
-						//~ break;
-					//~ }
-					//~ else
-						//~ nums.push_back(num);
-			
-					//~ input >> separator;
-					//~ std::cout << "\nPrinting separator: " << separator;
-					
-					//~ input >> num;
-					//~ std::cout << "\nPrinting num2: " << num;
-					//~ if (input.fail()) {
-						//~ std::cerr << "\nError parsing a number\n";
-						//~ break;
-					//~ }
-					//~ else
-						//~ nums.push_back(num);
-				//~ }
 			}
 			
-			for (unsigned x: nums) {
-				std::cout << x << " ";
-			}
-			std::cout << "We get until here.";
+			//~ for (unsigned x: nums) {
+				//~ std::cout << x << " ";
+			//~ }
+			//~ std::cout << "We get until here.";
 			matrix.assignEdge(nums);
 			matrix.printMatrix();
 		}	
@@ -193,56 +123,16 @@ int main() {
 			// Case 4: one of s or t don't exist (or both don't exist).
 			// though as long as one doesn't exist, we can output false.
 			
-			// This vector stores all the visited vertices.
-			std::vector<unsigned> visited_vertices;
-			visited_vertices.push_back(s);
-			// This vector stores the nodes we need to check out.
-			std::vector<unsigned> to_visit;
+			if (matrix.find_shorted_path(s,t)) {
+				matrix.printShortestPath();
+			}
 			
-			//~ std::vector<unsigned> parent_id = {};
-			//~ Node node_s(s, parent_id);
-			bool t_found = false;
-			
-			//~ if (s or t > number_of_vertices - 1) {
-				//~ std::cerr << "Error: s or t is an invalid number";
-				//~ break;
-			//~ }
-			
-			//~ else if (s == t) {
-				//~ std::cout << t << "-" << t << "\n";
-				//~ break;
-			//~ }
-			
-			//~ mat = matrix.getMatrix();
-			//~ for (unsigned index = 0; index < number_of_vertices; index++) {
-				//~ is_t_connected(t, mat[index],
+			else
+				std::cerr << "There is no shortest path. Exit from main";
 				
-			//~ }
-			
-			//~ while (t_found != true) {
-				
-				
-				//~ for (unsigned index = 0; index <node.length(); index++) {
-					//~ if (node[index] == 1) {
-						//~ to_visit.push_back(index);
-						//~ // MY QUESTION IS: IF I TAKE THE parent_id from node_s and add an element, 
-						//~ // does that change the vector for node_s? Also, does it matter? No.
-						//~ // 
-						//~ Node node_i(index,node_s.getParentId().push_back(node_s.getId()))
-					//~ }
-				//~ }
-				
-				//~ // for loop that looks at each vertex in to_visit
-				//~ for (unsigned 
-			
-			//~ // node is one row of the matrix
-			//~ std::vector<unsigned> node = matrix.getMatrix()[s];	
-			
-			
-			
-			
-			
+			matrix.resetAMatrix();
 		}     
+			
     }
 }
 
@@ -291,3 +181,39 @@ int main() {
 	
 	
 	
+	
+//--------------------------------------------------------
+			//~ if (s or t > number_of_vertices - 1) {
+				//~ std::cerr << "Error: s or t is an invalid number";
+				//~ break;
+			//~ }
+			
+			//~ else if (s == t) {
+				//~ std::cout << t << "-" << t << "\n";
+				//~ break;
+			//~ }
+			
+			//~ mat = matrix.getMatrix();
+			//~ for (unsigned index = 0; index < number_of_vertices; index++) {
+				//~ is_t_connected(t, mat[index],
+				
+			//~ }
+			
+			//~ while (t_found != true) {
+				
+				
+				//~ for (unsigned index = 0; index <node.length(); index++) {
+					//~ if (node[index] == 1) {
+						//~ to_visit.push_back(index);
+						//~ // MY QUESTION IS: IF I TAKE THE parent_id from node_s and add an element, 
+						//~ // does that change the vector for node_s? Also, does it matter? No.
+						//~ // 
+						//~ Node node_i(index,node_s.getParentId().push_back(node_s.getId()))
+					//~ }
+				//~ }
+				
+				//~ // for loop that looks at each vertex in to_visit
+				//~ for (unsigned 
+			
+			//~ // node is one row of the matrix
+			//~ std::vector<unsigned> node = matrix.getMatrix()[s];	
