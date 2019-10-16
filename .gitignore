@@ -1,2 +1,5 @@
 # Don't track the content in these folders
 build/
+.DS_Store
+headers/.DS_Store
+ece650-a2
