@@ -1,76 +1,105 @@
-// Compile with c++ ece650-a2cpp -std=c++11 -o ece650-a2
+#include <algorithm>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <vector>
 
-int main(int argc, char** argv) {
-    // Test code. Replaced with your code
+#include "headers/node.h"
+#include "headers/amatrix.h"
 
-    // Print command line arguments that were used to start the program
-    std::cout << "Called with " << argc << " arguments\n";
-    for (int i = 0; i < argc; ++i)
-        std::cout << "Arg " << i << " is " << argv[i] << "\n";
 
-    // separator character
-    const char comma = ',';
+AMatrix matrix;
 
-    // read from stdin until EOF
-    while (!std::cin.eof()) {
-        // print a promt
-        std::cout << "Enter numbers separated by comma: ";
+int main() {
+  while (!std::cin.eof()) {
+    // Read a line of input until EOL and store in a string.
+    std::string line;
 
-        // read a line of input until EOL and store in a string
-        std::string line;
-        std::getline(std::cin, line);
+    // Get the input line. The last character is the newline '\n'.
+    std::getline(std::cin, line);
+    // Create an input stream based on the line.
+    // We will use the input stream to parse the line.
+    std::istringstream input(line);
 
-        // create an input stream based on the line
-        // we will use the input stream to parse the line
-        std::istringstream input(line);
+    /* We expect each line to contain a list of numbers.
+    This vector will store the numbers.
+    They are assumed to be unsigned (i.e., positive) */
+    std::vector<unsigned> nums;
 
-        // we expect each line to contain a list of numbers
-        // this vector will store the numbers.
-        // they are assumed to be unsigned (i.e., positive)
-        std::vector<unsigned> nums;
+    // Store the input command.
+    char command;
+    input >> command;
 
-        // while there are characters in the input line
-        while (!input.eof()) {
-            unsigned num;
-            // parse an integer
-            input >> num;
-            if (input.fail()) {
-                std::cerr << "Error parsing a number\n";
-                break;
-            }
-            else
-                nums.push_back(num);
-
-            // if eof bail out
-            if (input.eof())
-                break;
-
-            // read a character
-            // Note that whitespace is ignored
-            char separator;
-            input >> separator;
-
-            // if error parsing, or if the character is not a comma
-            if (input.fail() || separator != comma) {
-                std::cerr << "Error parsing separator\n";
-                break;
-            }
-        }
-
-        // done parsing a line, print the numbers
-        if (!nums.empty()) {
-            std::cout << "\nYou have entered " << nums.size() << " numbers: ";
-            size_t i = 0;
-            for (unsigned x : nums) {
-                std::cout << x;
-                // print a comma if not the last number
-                i++;
-                if (i < nums.size()) std::cout << ",";
-            }
-        }
-        std::cout << std::endl;
+    // Create adjacency matrix if input is V.
+    if (command == 'V') {
+      unsigned number_of_vertices;
+      while (!input.eof()) {
+		input >> number_of_vertices;
+		if (input.fail()) {
+			std::cerr << "Error: parsing V command\n";
+			break;
+		}
+	  }
+      matrix.setMatrix(number_of_vertices);
     }
+
+    // Assign edges to matrix if E is input.
+    else if (command == 'E') {
+      unsigned num;
+      char separator;
+      input >> separator;
+      input >> separator;
+      while (!input.eof()) {
+        if (input.fail()) {
+          std::cerr << "Error: parsing E command\n";
+          break;
+        }
+        input >> num;
+        if (matrix.greaterThanVertices(num)) {
+			std::cerr << "Error: edge exceeds vertex count\n";
+			break;
+		}
+        nums.push_back(num);
+        input >> separator;
+        if (input.fail()) {
+          std::cerr << "Error: parsing E command\n";
+          break;
+        }
+        input >> num;
+        if (matrix.greaterThanVertices(num)) {
+			std::cerr << "Error: edge exceeds vertex count\n";
+			break;
+		}
+        nums.push_back(num);
+        input >> separator;
+        input >> separator;
+        input >> separator;
+      }
+      matrix.assignEdge(nums);
+    }
+
+    // Output shortest path between vertices s and t.
+    else if (command == 's') {
+      unsigned s;
+      unsigned t;
+      while (!input.eof()) {
+		input >> s;
+		if (input.fail()) {
+			std::cerr << "\nError: parsing s command\n";
+			break;
+		}
+		input >> t;
+		if (input.fail()) {
+			std::cerr << "\nError: parsing s command\n";
+			break;
+		}
+	  } 
+	  if (matrix.findShortedPath(s, t)) {
+		  if (s != t) {
+		    matrix.printShortestPath();
+		  }
+	  }
+	  matrix.resetAMatrix();
+    }	
+  }
 }
