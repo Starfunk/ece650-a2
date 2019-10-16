@@ -14,6 +14,7 @@ AMatrix::AMatrix(unsigned num) {
 
 void AMatrix::setMatrix(unsigned num) {
 	number_of_vertices = num;
+	matrix.clear();
 	// Resize matrix based on the number of vertices.
 	matrix.resize(number_of_vertices,
 		std::vector<unsigned>(number_of_vertices));
@@ -25,7 +26,6 @@ void AMatrix::assignEdge(std::vector<unsigned> vec) {
 		matrix[vec[i + 1]][vec[i]] = 1;      
 	}  	
 }
-
 
 void AMatrix::printShortestPath(void) {
 	unsigned n = visited_nodes.size();
@@ -39,6 +39,7 @@ void AMatrix::printVisitedNodes(void) {
 		std::cout << "Node " << node.getId() << ":";
 		node.printParentId();
 	}
+	std::cout << "\n";
 }
 
 void AMatrix::printMatrix(void) {
@@ -84,7 +85,7 @@ std::vector<unsigned> AMatrix::findNode(unsigned id) {
 		}
 	}
 	
-	std::cerr << "Error: node not in visited_nodes.";
+	std::cerr << "Error: node not in visited_nodes\n";
 	std::vector<unsigned> null;
 	return null;
 }
@@ -99,8 +100,7 @@ void AMatrix::resetAMatrix(void) {
 bool AMatrix::find_shorted_path(unsigned s, unsigned t) {
 	bool t_found = false;
 	if (s > number_of_vertices - 1 or t > number_of_vertices - 1) {
-			std::cout << number_of_vertices;
-			std::cerr << "Error: s or t is an invalid number";
+			std::cerr << "Error: s or t is an invalid number\n";
 			return false;
 		}
 	else if (s == t) {
@@ -113,16 +113,7 @@ bool AMatrix::find_shorted_path(unsigned s, unsigned t) {
 	Node node_s(s,parent_id);
 	visited_nodes.push_back(node_s);
 	visited_vertices.push_back(s);
-
 	
-	//~ unsigned n = visited_nodes.size();
-	//~ Node parent_id1 = visited_nodes[n-1];
-	//~ parent_id1.printParentId();
-	
-	std::cout << "Before s row\n";
-	printVisitedNodes();
-	
-	// Only for s row
 	for (unsigned index = 0; index < number_of_vertices; index++) {
 		if (matrix[s][index] == 1) {
 			if (index == t) {
@@ -144,18 +135,13 @@ bool AMatrix::find_shorted_path(unsigned s, unsigned t) {
 		}
 	}
 	
-	std::cout << "After s row\n";
-	printVisitedNodes();
-	
 	while (t_found != true) {
-		
-		std::cout << "This second part is running!\n"; // HELPER
 		
 		to_visit2 = {};
 		
 		if (to_visit1.size() == 0) {
-			std::cerr << "Error: there is no shortest path between"
-				<< s << " and " << t << " . Because to_visit1 is empty";
+			std::cerr << "Error: there is no shortest path between "
+				<< s << " and " << t << "\n";
 			return false;	
 		}
 		
@@ -182,8 +168,8 @@ bool AMatrix::find_shorted_path(unsigned s, unsigned t) {
 				}
 			}
 			if (i == number_of_vertices - 1) {
-				std::cerr << "Error: there is no shortest path between"
-					<< s << " and " << t << " .";
+				std::cerr << "Error: there is no shortest path between "
+					<< s << " and " << t << "\n";
 				return false;	
 			}
 		}
@@ -191,15 +177,14 @@ bool AMatrix::find_shorted_path(unsigned s, unsigned t) {
 		to_visit1 = {};
 		
 		if (to_visit2.size() == 0) {
-			std::cerr << "Error: there is no shortest path between"
-					<< s << " and " << t << " . Because to_visit2 is empty";
+			std::cerr << "Error: there is no shortest path between "
+					<< s << " and " << t << "\n";
 				return false;	
 		}
 
 		for (unsigned i = 0; i < to_visit2.size(); i++) {
 			unsigned vertex = to_visit2[i];
 			for (unsigned index = 0; index < number_of_vertices; index++) {
-				
 				
 				if (matrix[vertex][index] == 1) {
 					std::vector<unsigned> parent_id 
@@ -219,12 +204,11 @@ bool AMatrix::find_shorted_path(unsigned s, unsigned t) {
 				}
 			}
 			if (i == number_of_vertices - 1) {
-				std::cerr << "Error: there is no shortest path between"
-					<< s << " and " << t << " .";
+				std::cerr << "Error: there is no shortest path between "
+					<< s << " and " << t << "\n";
 				return false;	
 			}
 		}
-	
 	}
 	return false;
 }

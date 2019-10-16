@@ -2,8 +2,10 @@
 #include <vector>
 #include "headers/node.h"
 
+// Constructor
 Node::Node(void){}
 
+// Constructor that initializes id and parent_id
 Node::Node(unsigned num, std::vector<unsigned> vec) {
 	id = num;
 	parent_id = vec;

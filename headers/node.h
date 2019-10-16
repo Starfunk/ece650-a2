@@ -10,8 +10,8 @@ class Node {
 	void printParentId(void);
 	
 	private:
-	unsigned id; // ID of node.
-	std::vector<unsigned> parent_id; // parent_id can be assigned a negative value, thus it is an int.
+	unsigned id; // Id of node.
+	std::vector<unsigned> parent_id; // Stores path from s to (node) id.
 };
 
 #endif
