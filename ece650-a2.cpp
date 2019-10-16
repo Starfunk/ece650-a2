@@ -46,26 +46,31 @@ int main() {
     else if (command == 'E') {
       unsigned num;
       char separator;
+      bool error = false;
       input >> separator;
       input >> separator;
       while (!input.eof()) {
         if (input.fail()) {
+		  error = true;
           std::cerr << "Error: parsing E command\n";
           break;
         }
         input >> num;
         if (matrix.greaterThanVertices(num)) {
+			error = true;
 			std::cerr << "Error: edge exceeds vertex count\n";
 			break;
 		}
         nums.push_back(num);
         input >> separator;
         if (input.fail()) {
+		  error = true;
           std::cerr << "Error: parsing E command\n";
           break;
         }
         input >> num;
         if (matrix.greaterThanVertices(num)) {
+			error = true;
 			std::cerr << "Error: edge exceeds vertex count\n";
 			break;
 		}
@@ -74,7 +79,10 @@ int main() {
         input >> separator;
         input >> separator;
       }
-      matrix.assignEdge(nums);
+      
+      if (error == false) {
+        matrix.assignEdge(nums);
+	  }
     }
 
     // Output shortest path between vertices s and t.
