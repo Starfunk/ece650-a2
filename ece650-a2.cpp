@@ -13,13 +13,14 @@ int main() {
   while (!std::cin.eof()) {
     // Read a line of input until EOL and store in a string.
     std::string line;
-
     // Get the input line. The last character is the newline '\n'.
     std::getline(std::cin, line);
     // Create an input stream based on the line.
     // We will use the input stream to parse the line.
     std::istringstream input(line);
-
+	if (std::cin.eof()) {
+	  break;
+	}
     /* We expect each line to contain a list of numbers.
     This vector will store the numbers.
     They are assumed to be unsigned (i.e., positive) */
@@ -79,7 +80,6 @@ int main() {
         input >> separator;
         input >> separator;
       }
-      
       if (error == false) {
         matrix.assignEdge(nums);
 	  }
@@ -101,6 +101,7 @@ int main() {
 			break;
 		}
 	  } 
+	  
 	  if (matrix.findShortedPath(s, t)) {
 		  if (s != t) {
 		    matrix.printShortestPath();
