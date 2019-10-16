@@ -2,16 +2,16 @@
 #define NODE_H
 
 class Node {
-	public:
-	Node();
-	Node(unsigned num1, std::vector<unsigned> vec);
-	unsigned getId(void);
-	std::vector<unsigned> getParentId(void);
-	void printParentId(void);
-	
-	private:
-	unsigned id; // Id of node.
-	std::vector<unsigned> parent_id; // Stores path from s to (node) id.
+ public:
+  Node();
+  Node(unsigned num1, std::vector<unsigned> vec);
+  unsigned getId(void);
+  std::vector<unsigned> getParentId(void);
+  void printParentId(void);
+
+ private:
+  unsigned id;                      // Id of node.
+  std::vector<unsigned> parent_id;  // Stores path from s to (node) id.
 };
 
 #endif

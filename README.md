@@ -14,3 +14,8 @@ You might need to modify `CMakeLists.txt` if you are adding additional
 source files for your code and/or tests.
 
 Commit your changes and submit on GitHub.
+
+# Clang-format
+To format code in the Google style, run:
+
+`clang-format -style=file -i -fallback-style=none ece650-a2.cpp	node.cpp amatrix.cpp headers/amatrix.h headers/node.h`
