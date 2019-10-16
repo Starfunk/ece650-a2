@@ -12,6 +12,3 @@ TEST_CASE("Successful Test Example") {
 TEST_CASE("Failing Test Examples") {
     CHECK(true == false);
 }
-
-
-

@@ -8,14 +8,15 @@ class AMatrix {
   void printMatrix(void);
   void printShortestPath(void);
   void printVisitedNodes(void);
-  unsigned getVertexCount(void);
-  std::vector<unsigned> findNode(unsigned id);
   void assignEdge(std::vector<unsigned> vec);
   void setMatrix(unsigned num);
   void resetAMatrix(void);
+  bool findShortedPath(unsigned s, unsigned t);
+  bool inVisitedVertices(unsigned num);
+  bool greaterThanVertices(unsigned num);
+  unsigned getVertexCount(void);
   std::vector<std::vector<unsigned> > getMatrix(void);
-  bool find_shorted_path(unsigned s, unsigned t);
-  bool is_in_visited_vertices(unsigned num);
+  std::vector<unsigned> findNode(unsigned id);
 
  private:
   unsigned number_of_vertices;

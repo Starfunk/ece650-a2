@@ -4,8 +4,9 @@
 #include <sstream>
 #include <vector>
 
-#include "headers/amatrix.h"
 #include "headers/node.h"
+#include "headers/amatrix.h"
+
 
 AMatrix matrix;
 
@@ -32,10 +33,13 @@ int main() {
     // Create adjacency matrix if input is V.
     if (command == 'V') {
       unsigned number_of_vertices;
-      input >> number_of_vertices;
-      if (input.fail()) {
-        std::cerr << "Error: parsing V command\n";
-      }
+      while (!input.eof()) {
+		input >> number_of_vertices;
+		if (input.fail()) {
+			std::cerr << "Error: parsing V command\n";
+			break;
+		}
+	  }
       matrix.setMatrix(number_of_vertices);
     }
 
@@ -48,41 +52,54 @@ int main() {
       while (!input.eof()) {
         if (input.fail()) {
           std::cerr << "Error: parsing E command\n";
+          break;
         }
         input >> num;
+        if (matrix.greaterThanVertices(num)) {
+			std::cerr << "Error: edge exceeds vertex count\n";
+			break;
+		}
         nums.push_back(num);
         input >> separator;
         if (input.fail()) {
           std::cerr << "Error: parsing E command\n";
+          break;
         }
         input >> num;
-
+        if (matrix.greaterThanVertices(num)) {
+			std::cerr << "Error: edge exceeds vertex count\n";
+			break;
+		}
         nums.push_back(num);
         input >> separator;
         input >> separator;
-
         input >> separator;
       }
       matrix.assignEdge(nums);
-      matrix.printMatrix();
     }
 
     // Output shortest path between vertices s and t.
     else if (command == 's') {
       unsigned s;
       unsigned t;
-      input >> s;
-      if (input.fail()) {
-        std::cerr << "\nError: parsing s command\n";
-      }
-      input >> t;
-      if (input.fail()) {
-        std::cerr << "\nError: parsing s command\n";
-      }
-      if (matrix.find_shorted_path(s, t)) {
-        matrix.printShortestPath();
-      }
-      matrix.resetAMatrix();
-    }
+      while (!input.eof()) {
+		input >> s;
+		if (input.fail()) {
+			std::cerr << "\nError: parsing s command\n";
+			break;
+		}
+		input >> t;
+		if (input.fail()) {
+			std::cerr << "\nError: parsing s command\n";
+			break;
+		}
+	  } 
+	  if (matrix.findShortedPath(s, t)) {
+		  if (s != t) {
+		    matrix.printShortestPath();
+		  }
+	  }
+	  matrix.resetAMatrix();
+    }	
   }
 }

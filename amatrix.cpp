@@ -1,9 +1,8 @@
-#include "headers/amatrix.h"
-
 #include <iostream>
 #include <vector>
 
 #include "headers/node.h"
+#include "headers/amatrix.h"
 
 // Base constructor.
 AMatrix::AMatrix(void) {}
@@ -72,12 +71,21 @@ unsigned AMatrix::getVertexCount(void) { return number_of_vertices; }
 std::vector<std::vector<unsigned> > AMatrix::getMatrix(void) { return matrix; }
 
 // Returns true if the node Id is in the graph and false otherwise.
-bool AMatrix::is_in_visited_vertices(unsigned num) {
+bool AMatrix::inVisitedVertices(unsigned num) {
   if (std::find(visited_vertices.begin(), visited_vertices.end(), num) !=
       visited_vertices.end()) {
     return true;
   } else
     return false;
+}
+
+// Returns true if num is greater than the number of vertices.
+bool AMatrix::greaterThanVertices(unsigned num) {
+	if (num >= number_of_vertices) {
+		return true;
+	}
+	else
+		return false;
 }
 
 // Returns the (node) Id's Parent Id from visited_nodes.
@@ -107,7 +115,7 @@ void AMatrix::resetAMatrix(void) {
  * Parent Id of the last node in Visited Nodes will represent the
  * shortest path.
  */
-bool AMatrix::find_shorted_path(unsigned s, unsigned t) {
+bool AMatrix::findShortedPath(unsigned s, unsigned t) {
   bool t_found = false;
   if (s > number_of_vertices - 1 or t > number_of_vertices - 1) {
     std::cerr << "Error: s or t is an invalid number\n";
@@ -131,7 +139,7 @@ bool AMatrix::find_shorted_path(unsigned s, unsigned t) {
         Node node_i(index, parent_id);
         visited_nodes.push_back(node_i);
         return true;
-      } else if (is_in_visited_vertices(index) != true) {
+      } else if (inVisitedVertices(index) != true) {
         to_visit1.push_back(index);
         std::vector<unsigned> parent_id = visited_nodes[0].getParentId();
         parent_id.push_back(index);
@@ -160,7 +168,7 @@ bool AMatrix::find_shorted_path(unsigned s, unsigned t) {
             Node node_i(index, parent_id);
             visited_nodes.push_back(node_i);
             return true;
-          } else if (!is_in_visited_vertices(index)) {
+          } else if (!inVisitedVertices(index)) {
             to_visit2.push_back(index);
             parent_id.push_back(index);
             Node node_i(index, parent_id);
@@ -193,7 +201,7 @@ bool AMatrix::find_shorted_path(unsigned s, unsigned t) {
             Node node_i(index, parent_id);
             visited_nodes.push_back(node_i);
             return true;
-          } else if (!is_in_visited_vertices(index)) {
+          } else if (!inVisitedVertices(index)) {
             to_visit1.push_back(index);
             parent_id.push_back(index);
             Node node_i(index, parent_id);
